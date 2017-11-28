@@ -1,0 +1,10 @@
+<div>
+  <form #passForm="ngForm">
+    <input type="text" (keyUp.enter)="onSubmit(pw)" 
+    required
+    [(ngModel)]="pw" name="pass"
+    placeholder="Enter password to test...">
+  </form>
+  <!-- <input type="text" [(ngModel)]="pw"> -->
+  {{pw}}
+</div>
