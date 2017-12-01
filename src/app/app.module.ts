@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PassCalcComponent } from './pass-calc/pass-calc.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

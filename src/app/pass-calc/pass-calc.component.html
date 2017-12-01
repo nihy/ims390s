@@ -1,10 +1,23 @@
-<div>
-  <form #passForm="ngForm">
-    <input type="text" (keyUp.enter)="onSubmit(pw)" 
-    required
-    [(ngModel)]="pw" name="pass"
-    placeholder="Enter password to test...">
-  </form>
-  <!-- <input type="text" [(ngModel)]="pw"> -->
-  {{pw}}
+<div class="container">
+  <div class="col-md-6 col-md-offset-3">
+    <h1>TEST YOUR PASSWORD</h1>
+    <form #passForm="ngForm" class="col align-self-start">
+      <span>Your attackers will guessing passwords at </span>
+      <input type="number" id="numAttacks" name="aps"
+      step="100" min="500" max="100000"
+      [ngModel]="attemptsPerSecond" (ngModelChange)="changeAttempts($event)">
+      <span> attempts per second.</span>
+      <br>
+      <br>
+      <input type="text" (keyUp.enter)="onSubmit()" [(ngModel)]="pw"
+      required
+      name="pass" class="full" placeholder="Enter password to test..."
+      style="font-size:25px">
+    </form>
+  </div>
+  <div *ngIf="timeToBreak" class="col-md-6 col-md-offset-3">
+    If you began attacking this password <i>right now</i>, it would take 
+      <br><h3>{{successMsg}}</h3><br> 
+    to complete the attack.
+  </div>
 </div>

@@ -1,0 +1,12 @@
+.full {
+    width: 100%;
+}
+
+input:focus {
+    outline:none;
+}
+
+#numAttacks{
+    display: inline-block;
+    font-family: monospace;
+}
