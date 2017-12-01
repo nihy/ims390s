@@ -8,11 +8,11 @@ import { EventEmitter } from '@angular/core/src/event_emitter';
 })
 export class PassCalcComponent {
 
-  private pw: string;
-  private attempts: number = -1;
-  private attemptsPerSecond: number = 1000;
-  private timeToBreak;
-  private successMsg;
+  pw: string;
+  attempts: number = -1;
+  attemptsPerSecond: number = 1000;
+  timeToBreak;
+  successMsg;
 
   constructor() { }
 
