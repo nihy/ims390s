@@ -16,20 +16,20 @@ export class PassCalcComponent {
 
   constructor() { }
 
-  private onSubmit() {
+  onSubmit() {
     this.attempts = Math.round(this.getTries(this.pw));
     this.timeToBreak = this.attempts / this.attemptsPerSecond;
     this.successMsg = this.secondsToString(this.timeToBreak);
   }
 
-  private changeAttempts(event: number) {
+  changeAttempts(event: number) {
     this.attemptsPerSecond = event;
     if (this.pw)
       this.onSubmit();
   }
   // This method attempts to estimate the number of attempts an attacker
   // would have to try to brute-force a random password
-  private getTries(pw: string) {
+  getTries(pw: string) {
     var symbolProbability = new Map<string, number>();
     var passLen = pw.length;
     var strChars = pw.split('');
