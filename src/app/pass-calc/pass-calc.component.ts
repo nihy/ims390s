@@ -11,15 +11,49 @@ export class PassCalcComponent {
   pw: string;
   attempts: number = -1;
   attemptsPerSecond: number = 1000;
-  timeToBreak;
-  successMsg;
+  timeToBreak: number;
+  successMsg: string;
+  // Testing for mixed case, numbers, special chars and length
+  goodPassTests = [
+    { title: 'Upper and lower case characters?', status: false },
+    { title: 'Numbers?', status: false },
+    { title: 'Special characters?', status: false},
+    { title: 'Longer than 12 characters?', status: false}
+  ];
 
   constructor() { }
 
   onSubmit() {
+    this.analyzePass(this.pw);
     this.attempts = Math.round(this.getTries(this.pw));
     this.timeToBreak = this.attempts / this.attemptsPerSecond;
     this.successMsg = this.secondsToString(this.timeToBreak);
+  }
+
+  analyzePass(pw: string) {
+    // Reset all tests
+    this.goodPassTests.forEach((test) => {
+      test.status = false;
+    });
+
+    // Do not allow spaces to be part of password
+    let chars = Array.from(pw.replace(/\s/g, ""));
+    let lower: boolean = false;
+    let upper: boolean = false;
+    let special =  /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    this.goodPassTests[2].status = special.test(pw);    
+
+    chars.forEach((char) => {
+      if (char == char.toLowerCase())
+        lower = true;
+      if (char == char.toUpperCase())
+        upper = true;
+      if (!isNaN(parseInt(char)))
+        this.goodPassTests[1].status = true;
+    })
+
+    this.goodPassTests[0].status = (lower && upper);
+    this.goodPassTests[3].status = pw.length >= 12;
   }
 
   changeAttempts(event: number) {
@@ -30,13 +64,13 @@ export class PassCalcComponent {
   // This method attempts to estimate the number of attempts an attacker
   // would have to try to brute-force a random password
   getTries(pw: string) {
-    var symbolProbability = new Map<string, number>();
-    var passLen = pw.length;
-    var strChars = pw.split('');
+    let symbolProbability = new Map<string, number>();
+    let passLen = pw.length;
+    let strChars = pw.split('');
 
     // create hashmap of appearances of each char in password string
     strChars.forEach((x) => {
-      var count = symbolProbability.get(x);
+      let count = symbolProbability.get(x);
       if (count)
         symbolProbability.set(x, ++count);
       else
@@ -51,7 +85,7 @@ export class PassCalcComponent {
     // H(x) = -sum(p[i] * log2(p[i])), from i = 0 to N - 1
     // where i is each character in a str of length N 
     // and p[i] is the probability of the symbol at position i
-    var shannonBit = 0;
+    let shannonBit = 0;
     symbolProbability.forEach((val) => {
       shannonBit += (val * Math.log2(val))
     });
@@ -59,7 +93,7 @@ export class PassCalcComponent {
 
     // Given the minimum average bits needed to encode our password,
     // the overall number of bits is then passLen * shannonBit 
-    var totalBits = passLen * shannonBit;
+    let totalBits = passLen * shannonBit;
 
     // The total number of attempts to crack our password is then
     // 2 ^ (totalBits - 1), from RFC 4086 (Eastlake, et al., pg. 4)
@@ -77,7 +111,7 @@ export class PassCalcComponent {
     if (numseconds < 1)
       return Math.round(numseconds * 1000) + ' milliseconds'
 
-    return numyears + " years " + numdays + " days " + numhours + " hours " + numminutes + " minutes " + Math.round(numseconds) + " seconds";
+    return numyears + " years, " + numdays + " days, " + numhours + " hours, " + numminutes + " minutes and " + Math.round(numseconds) + " seconds";
   }
 
 
